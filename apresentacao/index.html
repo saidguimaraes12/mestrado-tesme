@@ -97,8 +97,91 @@
 
   <section class="painel" id="q6" hidden>
     <h2>Questão 6: dados brutos e mais informações</h2>
-    <img src="../figuras/item6c_comparacao.png" alt="Base reconstruída versus base da questão 5" width="800">
-    <img src="../figuras/item6d_comparacao_modelos.png" alt="Erro dos modelos com mais informações" width="800">
+
+    <h3>O problema</h3>
+    <p>
+      Na questão 5, a tabela "um dia por linha" veio <strong>pronta</strong>. Aqui, partimos dos
+      <strong>dados brutos</strong>: um arquivo de consumo de hora em hora e um arquivo de clima,
+      com defeitos e horários desencontrados. O objetivo é <strong>reconstruir a base da questão 5</strong>
+      e depois testar se <strong>mais informações sobre o dia</strong> melhoram a previsão.
+    </p>
+
+    <nav class="subabas">
+      <button class="aba ativa" data-alvo="q6abc">(a)(b)(c) Preparação dos dados</button>
+      <button class="aba" data-alvo="q6d">(d) Mais informações</button>
+    </nav>
+
+    <!-- Preparação dos dados -->
+    <div id="q6abc">
+      <ol class="passos">
+        <li>
+          <strong>Limpar o clima.</strong> Removemos 29 medições com o código −9999 ("não medido"),
+          5 horários repetidos e uma pressão impossível (299,67, provavelmente 29,967 digitado errado).
+        </li>
+        <li>
+          <strong>Sincronizar os relógios.</strong> O consumo é medido na hora cheia e o clima aos 51 minutos.
+          Estimamos o clima na hora cheia com uma reta entre as duas medições vizinhas (interpolação):
+          05:51 = 35,1 °F e 06:51 = 37,0 °F → 06:00 ≈ 35,4 °F.
+        </li>
+        <li>
+          <strong>Passar de horas para dias.</strong> Ajustamos o fuso de Pittsburgh (−5 h), juntamos as
+          24 horas de cada dia e pegamos o maior consumo e a maior temperatura.
+        </li>
+        <li>
+          <strong>Conferir.</strong> A base reconstruída ficou igual à da questão 5: o consumo bateu
+          exatamente, e a temperatura diferiu em média só 0,07 °F.
+        </li>
+      </ol>
+      <img src="../figuras/item6c_comparacao.png" alt="Base reconstruída versus base da questão 5">
+      <p class="legenda">
+        À esquerda, a base pronta da questão 5; à direita, a base que construímos a partir dos dados brutos.
+      </p>
+    </div>
+
+    <!-- Mais informações -->
+    <div id="q6d" hidden>
+      <p>
+        Até aqui, a previsão usava <strong>uma informação</strong> (a temperatura máxima). Agora damos ao modelo
+        <strong>várias</strong> ao mesmo tempo: temperatura mínima, médias de orvalho, umidade, pressão e vento,
+        a condição do tempo e, por ideia nossa, o <strong>dia da semana</strong>. É a mesma ideia de antes, só
+        com mais "coisas" na equação (regressão múltipla).
+      </p>
+
+      <h3>Por que o dia da semana?</h3>
+      <img src="../figuras/item6d_dia_semana.png" alt="Consumo médio por dia da semana">
+      <p class="legenda">
+        No sábado e no domingo o consumo cai cerca de 0,2 GW: comércio, escritórios e fábricas ficam fechados.
+      </p>
+
+      <h3>Mais informações melhoram a previsão?</h3>
+      <img src="../figuras/item6d_comparacao_modelos.png" alt="Erro dos modelos com mais informações">
+      <p class="legenda">
+        Cada barra é uma equação diferente. A de cima usa só a temperatura máxima (a questão 5); cada barra
+        abaixo recebe uma informação a mais. O comprimento é o erro em dias que o modelo não viu:
+        <strong>barra menor = previsão melhor</strong>.
+      </p>
+
+      <table>
+        <thead>
+          <tr><th>O que o modelo sabe sobre o dia</th><th>Erro na prova</th><th>RMSE (GW)</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Só a temperatura máxima (questão 5)</td><td>0,0251</td><td>0,158</td></tr>
+          <tr><td>+ temperatura mínima</td><td>0,0204</td><td>0,143</td></tr>
+          <tr><td>+ orvalho, umidade, pressão e vento</td><td>0,0200</td><td>0,141</td></tr>
+          <tr><td>+ condição do tempo</td><td>0,0198</td><td>0,141</td></tr>
+          <tr><td>+ dia da semana</td><td>0,0106</td><td>0,103</td></tr>
+          <tr class="melhor"><td>Tudo, com kernel gaussiano</td><td>0,0082</td><td>0,091</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Conclusões</h3>
+    <ul>
+      <li>Preparar os dados (limpar, sincronizar, agregar) é a maior parte do trabalho, e precisa ser conferido.</li>
+      <li>Sim, mais informações melhoram a previsão: o erro cai de 0,0251 para 0,0082.</li>
+      <li>Do clima, quem mais ajuda é a temperatura mínima; o maior ganho vem do dia da semana, que nem é do clima.</li>
+    </ul>
   </section>
 
   <section class="painel" id="comp" hidden>

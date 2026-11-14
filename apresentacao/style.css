@@ -132,3 +132,43 @@ tr.melhor {
   padding: 6px 14px;
   font-size: 14px;
 }
+
+/* ---------- Passos numerados ---------- */
+.passos {
+  padding-left: 0;
+  list-style: none;          /* tira os números padrão... */
+  counter-reset: passo;      /* ...para desenhar os nossos */
+}
+
+.passos li {
+  counter-increment: passo;
+  position: relative;
+  padding: 12px 16px 12px 56px;
+  margin-bottom: 10px;
+  background: var(--fundo);
+  border: 1px solid var(--borda);
+  border-radius: 8px;
+}
+
+/* A bolinha com o número de cada passo */
+.passos li::before {
+  content: counter(passo);
+  position: absolute;
+  left: 14px;
+  top: 12px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--destaque);
+  color: var(--texto-no-destaque);
+  font-weight: 700;
+  text-align: center;
+  line-height: 28px;
+}
+
+/* ---------- Legendas das figuras ---------- */
+.legenda {
+  margin-top: -8px;
+  font-size: 14px;
+  color: var(--texto-suave);
+}
