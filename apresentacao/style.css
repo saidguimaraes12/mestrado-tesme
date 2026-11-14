@@ -195,3 +195,9 @@ tr.melhor {
 .metodo p {
   margin: 0;
 }
+
+/* ---------- Nome do autor ---------- */
+.autor {
+  color: var(--texto) !important;
+  font-weight: 600;
+}
