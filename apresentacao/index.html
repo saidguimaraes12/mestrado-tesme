@@ -3,20 +3,34 @@
 <head>
   <meta charset="UTF-8">
   <title>Previsão de consumo de energia</title>
+  <script src="script.js" defer></script>
 </head>
 <body>
   <h1>Previsão de consumo de energia elétrica</h1>
   <p>Mestrado UFAM — Problem Set 1 e Competição GECAD 2025</p>
 
   <nav>
-    <button>Questão 5</button>
-    <button>Questão 6</button>
-    <button>Competição</button>
+    <button class="aba ativa" data-alvo="q5">Questão 5</button>
+    <button class="aba" data-alvo="q6">Questão 6</button>
+    <button class="aba" data-alvo="comp">Competição</button>
   </nav>
 
-  <section>
+  <section class="painel" id="q5">
     <h2>Questão 5: regressão linear e não linear</h2>
     <img src="../figuras/item5a_quatro_modelos.png" alt="Os quatro modelos da questão 5" width="800">
+    <img src="../figuras/item5b_absoluto_vs_quadrado.png" alt="Erro absoluto versus quadrado" width="800">
+  </section>
+
+  <section class="painel" id="q6" hidden>
+    <h2>Questão 6: dados brutos e mais informações</h2>
+    <img src="../figuras/item6c_comparacao.png" alt="Base reconstruída versus base da questão 5" width="800">
+    <img src="../figuras/item6d_comparacao_modelos.png" alt="Erro dos modelos com mais informações" width="800">
+  </section>
+
+  <section class="painel" id="comp" hidden>
+    <h2>Competição GECAD 2025: consumo de um prédio, hora a hora</h2>
+    <img src="../figuras/comp_perfil_tipico.png" alt="Perfil típico do prédio" width="800">
+    <img src="../figuras/comp_real_vs_previsto.png" alt="Real versus previsto nos dias da competição" width="800">
   </section>
 </body>
 </html>
