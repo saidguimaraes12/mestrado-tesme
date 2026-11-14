@@ -18,8 +18,50 @@
 
   <section class="painel" id="q5">
     <h2>Questão 5: regressão linear e não linear</h2>
-    <img src="../figuras/item5a_quatro_modelos.png" alt="Os quatro modelos da questão 5" width="800">
-    <img src="../figuras/item5b_absoluto_vs_quadrado.png" alt="Erro absoluto versus quadrado" width="800">
+
+    <h3>O problema</h3>
+    <p>
+      Prever o <strong>pico de consumo de energia do dia</strong> (GW) a partir da
+      <strong>temperatura máxima do dia</strong> (°F), com 1.460 dias de Pittsburgh (2008–2011).
+      Os dados têm formato de <strong>U</strong>: o consumo sobe no frio (aquecimento) e,
+      principalmente, no calor (ar-condicionado).
+    </p>
+
+    <h3>O método</h3>
+    <p>
+      Todos os modelos têm a mesma forma: <em>consumo = letra × coisa + letra × coisa + … + constante</em>.
+      O computador descobre as letras pelas <strong>equações normais</strong>; o que muda de um modelo
+      para outro é a "coisa".
+    </p>
+
+    <img src="../figuras/item5a_quatro_modelos.png" alt="Os quatro modelos da questão 5">
+
+    <table>
+      <thead>
+        <tr><th>Modelo</th><th>A "coisa"</th><th>Erro médio²</th><th>RMSE (GW)</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Chutar sempre a média</td><td>—</td><td>0,0873</td><td>0,296</td></tr>
+        <tr><td>Reta</td><td>x</td><td>0,0772</td><td>0,278</td></tr>
+        <tr><td>Polinômio grau 5</td><td>x, x², …, x⁵</td><td>0,0249</td><td>0,158</td></tr>
+        <tr><td>RBF</td><td>5 "sininhos" (σ = 20)</td><td>0,0250</td><td>0,158</td></tr>
+        <tr class="melhor"><td>Kernel gaussiano</td><td>1 sininho por dia + multa (λ = 10⁻⁴)</td><td>0,0247</td><td>0,157</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Erro ao quadrado × erro absoluto (5b)</h3>
+    <p>
+      O erro ao quadrado se comporta como a <strong>média</strong> (os picos puxam a curva);
+      o erro absoluto, como a <strong>mediana</strong> (a curva segue a maioria dos dias).
+    </p>
+    <img src="../figuras/item5b_absoluto_vs_quadrado.png" alt="Erro absoluto versus quadrado">
+
+    <h3>Conclusões</h3>
+    <ul>
+      <li>A reta não dobra: ganha quase nada de "chutar a média".</li>
+      <li>Os três modelos não lineares empatam (erro típico de ~0,16 GW) e só diferem nas pontas.</li>
+      <li>Complexidade demais leva ao <em>overfitting</em>; a regularização (λ) funciona como freio.</li>
+    </ul>
   </section>
 
   <section class="painel" id="q6" hidden>

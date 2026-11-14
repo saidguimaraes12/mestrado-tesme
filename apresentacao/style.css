@@ -82,3 +82,35 @@ nav {
   height: auto;
   margin: 16px 0;
 }
+
+/* ---------- Textos dentro das seções ---------- */
+.painel h3 {
+  margin-top: 28px;
+  margin-bottom: 8px;
+  color: var(--destaque);
+}
+
+/* ---------- Tabelas ---------- */
+table {
+  width: 100%;
+  border-collapse: collapse;   /* junta as bordas das células numa linha só */
+  margin: 16px 0;
+  font-size: 15px;
+}
+
+th, td {
+  text-align: left;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--borda);
+}
+
+th {
+  background: var(--fundo);
+  color: var(--texto-suave);
+}
+
+/* A linha do melhor modelo fica destacada */
+tr.melhor {
+  background: #e8f1ff;
+  font-weight: 600;
+}
