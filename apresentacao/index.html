@@ -16,7 +16,7 @@
     <button class="aba" data-alvo="comp">Competição</button>
   </nav>
 
-  <section class="painel" id="q5">
+    <section class="painel" id="q5">
     <h2>Questão 5: regressão linear e não linear</h2>
 
     <h3>O problema</h3>
@@ -30,37 +30,68 @@
     <h3>O método</h3>
     <p>
       Todos os modelos têm a mesma forma: <em>consumo = letra × coisa + letra × coisa + … + constante</em>.
-      O computador descobre as letras pelas <strong>equações normais</strong>; o que muda de um modelo
-      para outro é a "coisa".
+      O computador descobre as letras; o que muda de um modelo para outro é a "coisa".
     </p>
 
-    <img src="../figuras/item5a_quatro_modelos.png" alt="Os quatro modelos da questão 5">
+    <!-- Sub-abas da questão 5 -->
+    <nav class="subabas">
+      <button class="aba ativa" data-alvo="q5a">5A: erro ao quadrado</button>
+      <button class="aba" data-alvo="q5b">5B: erro absoluto</button>
+    </nav>
 
-    <table>
-      <thead>
-        <tr><th>Modelo</th><th>A "coisa"</th><th>Erro médio²</th><th>RMSE (GW)</th></tr>
-      </thead>
-      <tbody>
-        <tr><td>Chutar sempre a média</td><td>—</td><td>0,0873</td><td>0,296</td></tr>
-        <tr><td>Reta</td><td>x</td><td>0,0772</td><td>0,278</td></tr>
-        <tr><td>Polinômio grau 5</td><td>x, x², …, x⁵</td><td>0,0249</td><td>0,158</td></tr>
-        <tr><td>RBF</td><td>5 "sininhos" (σ = 20)</td><td>0,0250</td><td>0,158</td></tr>
-        <tr class="melhor"><td>Kernel gaussiano</td><td>1 sininho por dia + multa (λ = 10⁻⁴)</td><td>0,0247</td><td>0,157</td></tr>
-      </tbody>
-    </table>
+    <!-- Conteúdo da 5A -->
+    <div id="q5a">
+      <p>
+        As letras são encontradas pelas <strong>equações normais</strong>: a fórmula que dá
+        o menor erro ao quadrado, vinda de "derivar o erro e igualar a zero".
+      </p>
+      <img src="../figuras/item5a_quatro_modelos.png" alt="Os quatro modelos da questão 5">
+      <table>
+        <thead>
+          <tr><th>Modelo</th><th>A "coisa"</th><th>Erro médio²</th><th>RMSE (GW)</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Chutar sempre a média</td><td>—</td><td>0,0873</td><td>0,296</td></tr>
+          <tr><td>Reta</td><td>x</td><td>0,0772</td><td>0,278</td></tr>
+          <tr><td>Polinômio grau 5</td><td>x, x², …, x⁵</td><td>0,0249</td><td>0,158</td></tr>
+          <tr><td>RBF</td><td>5 "sininhos" (σ = 20)</td><td>0,0250</td><td>0,158</td></tr>
+          <tr class="melhor"><td>Kernel gaussiano</td><td>1 sininho por dia + multa (λ = 10⁻⁴)</td><td>0,0247</td><td>0,157</td></tr>
+        </tbody>
+      </table>
+    </div>
 
-    <h3>Erro ao quadrado × erro absoluto (5b)</h3>
-    <p>
-      O erro ao quadrado se comporta como a <strong>média</strong> (os picos puxam a curva);
-      o erro absoluto, como a <strong>mediana</strong> (a curva segue a maioria dos dias).
-    </p>
-    <img src="../figuras/item5b_absoluto_vs_quadrado.png" alt="Erro absoluto versus quadrado">
+    <!-- Conteúdo da 5B (começa escondido) -->
+    <div id="q5b" hidden>
+      <p>
+        O erro ao quadrado se comporta como a <strong>média</strong> (os picos puxam a curva);
+        o erro absoluto, como a <strong>mediana</strong> (a curva segue a maioria dos dias).
+        Sem fórmula pronta, o problema vira <strong>programação linear</strong>, resolvida com o cvxpy.
+      </p>
+      <img src="../figuras/item5b_absoluto_vs_quadrado.png" alt="Erro absoluto versus quadrado">
+      <img src="../figuras/item5b_kernel.png" alt="Kernel: erro absoluto versus quadrado">
+      <table>
+        <thead>
+          <tr><th>Modelo</th><th>Treinado com</th><th>Erro médio absoluto</th><th>Erro médio²</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Reta</td><td>quadrado</td><td>0,2265</td><td>0,0772</td></tr>
+          <tr><td>Reta</td><td>absoluto</td><td>0,2193</td><td>0,0854</td></tr>
+          <tr><td>Polinômio grau 5</td><td>quadrado</td><td>0,1204</td><td>0,0249</td></tr>
+          <tr><td>Polinômio grau 5</td><td>absoluto</td><td>0,1192</td><td>0,0253</td></tr>
+          <tr><td>RBF</td><td>quadrado</td><td>0,1215</td><td>0,0250</td></tr>
+          <tr><td>RBF</td><td>absoluto</td><td>0,1200</td><td>0,0256</td></tr>
+          <tr><td>Kernel</td><td>quadrado</td><td>0,1198</td><td>0,0247</td></tr>
+          <tr><td>Kernel</td><td>absoluto</td><td>0,1182</td><td>0,0251</td></tr>
+        </tbody>
+      </table>
+      <p>Cada modelo ganha na régua em que foi treinado.</p>
+    </div>
 
     <h3>Conclusões</h3>
     <ul>
       <li>A reta não dobra: ganha quase nada de "chutar a média".</li>
       <li>Os três modelos não lineares empatam (erro típico de ~0,16 GW) e só diferem nas pontas.</li>
-      <li>Complexidade demais leva ao <em>overfitting</em>; a regularização (λ) funciona como freio.</li>
+      <li>O erro absoluto é mais robusto aos picos; o quadrado dá mais atenção a eles.</li>
     </ul>
   </section>
 

@@ -114,3 +114,15 @@ tr.melhor {
   background: #e8f1ff;
   font-weight: 600;
 }
+
+/* ---------- Sub-abas (dentro de uma seção) ---------- */
+.subabas {
+  margin-top: 24px;
+  border-bottom: 1px solid var(--borda);
+  padding-bottom: 12px;
+}
+
+.subabas .aba {
+  padding: 6px 14px;
+  font-size: 14px;
+}

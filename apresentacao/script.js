@@ -1,18 +1,19 @@
-// Encontra todos os botões de aba e todas as seções
-const abas = document.querySelectorAll('.aba');
-const paineis = document.querySelectorAll('.painel');
+// Para CADA barra de abas da página (a principal e as sub-abas)...
+document.querySelectorAll('nav').forEach(barra => {
+  const botoes = barra.querySelectorAll('button');
 
-// Para cada botão: quando for clicado...
-abas.forEach(aba => {
-  aba.addEventListener('click', () => {
-    // 1. esconde todas as seções
-    paineis.forEach(painel => painel.hidden = true);
+  // ...e para cada botão dessa barra: quando for clicado...
+  botoes.forEach(botao => {
+    botao.addEventListener('click', () => {
+      // 1. esconde os conteúdos de TODOS os botões DESTA barra
+      botoes.forEach(b => {
+        b.classList.remove('ativa');
+        document.getElementById(b.dataset.alvo).hidden = true;
+      });
 
-    // 2. mostra só a seção que este botão aponta (o data-alvo)
-    document.getElementById(aba.dataset.alvo).hidden = false;
-
-    // 3. marca este botão como o ativo (vamos usar isso no CSS)
-    abas.forEach(a => a.classList.remove('ativa'));
-    aba.classList.add('ativa');
+      // 2. mostra só o conteúdo do botão clicado
+      botao.classList.add('ativa');
+      document.getElementById(botao.dataset.alvo).hidden = false;
+    });
   });
 });
