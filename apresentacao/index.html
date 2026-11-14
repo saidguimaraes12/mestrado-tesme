@@ -186,8 +186,139 @@
 
   <section class="painel" id="comp" hidden>
     <h2>Competição GECAD 2025: consumo de um prédio, hora a hora</h2>
-    <img src="../figuras/comp_perfil_tipico.png" alt="Perfil típico do prédio" width="800">
-    <img src="../figuras/comp_real_vs_previsto.png" alt="Real versus previsto nos dias da competição" width="800">
+
+    <nav class="subabas">
+      <button class="aba ativa" data-alvo="comp1">1. O desafio</button>
+      <button class="aba" data-alvo="comp2">2. Preparação</button>
+      <button class="aba" data-alvo="comp3">3. Métodos</button>
+      <button class="aba" data-alvo="comp4">4. Resultado</button>
+    </nav>
+
+    <!-- 1. O desafio -->
+    <div id="comp1">
+      <h3>O que foi pedido</h3>
+      <p>
+        Prever o <strong>consumo de energia de um prédio de escritórios</strong>, <strong>hora a hora</strong>,
+        para o <strong>dia seguinte</strong>: 24 números por dia, durante 5 dias (segunda a sexta).
+        A avaliação é <strong>multicritério</strong>: conta o <strong>erro</strong> (RMSE) e também o
+        <strong>tempo</strong> que o computador leva para fazer a previsão.
+      </p>
+
+      <h3>O que foi dado</h3>
+      <table>
+        <thead>
+          <tr><th>Arquivo</th><th>Conteúdo</th><th>Para que serve</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>v1.0</td><td>1 ano de leituras, de 5 em 5 minutos</td><td>Histórico para estudar o prédio</td></tr>
+          <tr><td>v2.0</td><td>Mais 40 dias, logo antes da competição</td><td>O histórico mais recente</td></tr>
+          <tr><td>Previsão do tempo</td><td>Temperatura hora a hora dos 5 dias</td><td>Informação disponível para prever</td></tr>
+          <tr><td>Consumo real</td><td>Só dos dias 1, 2 e 3</td><td>O gabarito, para medir o erro</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 2. Preparação -->
+    <div id="comp2" hidden>
+      <ol class="passos">
+        <li>
+          <strong>Achar os defeitos.</strong> Em 1.630 leituras a tensão era 0: o medidor estava desligado e o
+          consumo aparecia como 0 (falso). Também havia 173 temperaturas exatamente 0 (falha do sensor).
+          Marcamos tudo isso como "vazio".
+        </li>
+        <li>
+          <strong>Passar de 5 em 5 minutos para hora em hora.</strong> Juntamos as 12 leituras de cada hora
+          tirando a média. As horas em que o medidor ficou desligado o tempo todo foram preenchidas
+          pela reta entre as horas vizinhas.
+        </li>
+        <li>
+          <strong>Descobrir o dia da semana.</strong> Os arquivos não têm datas, só horários. Mas a cada 7 dias
+          aparecem 2 dias de consumo baixo: o fim de semana. Assim sabemos o dia da semana de todos os dias.
+        </li>
+      </ol>
+
+      <h3>O que descobrimos</h3>
+      <img src="../figuras/comp_perfil_tipico.png" alt="Perfil típico do prédio">
+      <p class="legenda">
+        Nos dias úteis o consumo sobe às 9h, tem uma queda no almoço (13–14h) e cai depois das 19h.
+        No fim de semana fica baixo o dia inteiro. É um prédio de escritórios:
+        <strong>a rotina das pessoas manda mais que o clima</strong>.
+      </p>
+    </div>
+
+    <!-- 3. Métodos -->
+    <div id="comp3" hidden>
+      <h3>As três formas de prever que testamos</h3>
+      <div class="metodos">
+        <div class="metodo">
+          <h4>A. Ingênuo</h4>
+          <p>Amanhã vai ser igual ao mesmo dia da semana passada.</p>
+        </div>
+        <div class="metodo">
+          <h4>B. Perfil médio</h4>
+          <p>Para cada hora, a média dessa hora nos últimos N dias úteis.</p>
+        </div>
+        <div class="metodo">
+          <h4>C. Regressão com temperatura</h4>
+          <p>Para cada hora, uma reta: consumo = a + b × temperatura prevista.</p>
+        </div>
+      </div>
+
+      <h3>Como escolhemos</h3>
+      <p>
+        Fizemos uma "prova" com os 20 dias úteis das últimas 4 semanas. Cada dia foi previsto usando
+        <strong>só os dias anteriores a ele</strong>, como na vida real: ninguém conhece o futuro.
+        Vence quem erra menos.
+      </p>
+      <table>
+        <thead>
+          <tr><th>Método</th><th>Erro médio na prova (W)</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>A. Ingênuo</td><td>964</td></tr>
+          <tr class="melhor"><td>B. Perfil médio, últimos 5 dias úteis</td><td>716</td></tr>
+          <tr><td>B. Perfil médio, últimos 10 dias úteis</td><td>735</td></tr>
+          <tr><td>B. Perfil médio, últimos 20 dias úteis</td><td>985</td></tr>
+          <tr><td>C. Regressão com temperatura</td><td>1.053</td></tr>
+        </tbody>
+      </table>
+      <p class="legenda">
+        O mais simples venceu. A temperatura quase não ajuda num prédio de escritórios, e olhar dias demais
+        para trás mistura informação desatualizada.
+      </p>
+    </div>
+
+    <!-- 4. Resultado -->
+    <div id="comp4" hidden>
+      <p>
+        Com o método escolhido (perfil médio dos últimos 5 dias úteis), previmos os 5 dias da competição.
+        Só os dias 1, 2 e 3 têm gabarito, por isso são <strong>3 gráficos</strong>: em cada um, a linha azul é o
+        que realmente aconteceu e a laranja é o que previmos.
+      </p>
+      <img src="../figuras/comp_real_vs_previsto.png" alt="Real versus previsto nos dias da competição">
+
+      <table>
+        <thead>
+          <tr><th>Dia</th><th>Erro (RMSE, W)</th><th>O que aconteceu</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Dia 1 (segunda)</td><td>1.282</td><td>Pico atípico de 7,8 kW no fim da manhã, e um equipamento ficou ligado à noite</td></tr>
+          <tr><td>Dia 2 (terça)</td><td>1.280</td><td>O equipamento continuou ligado a madrugada inteira</td></tr>
+          <tr class="melhor"><td>Dia 3 (quarta)</td><td>629</td><td>Dia normal: a previsão acompanhou o real, até na queda do almoço</td></tr>
+        </tbody>
+      </table>
+      <p class="legenda">
+        Tempo de execução: cerca de 0,02 milésimo de segundo por dia, porque é só uma média.
+      </p>
+    </div>
+
+    <h3>Conclusões</h3>
+    <ul>
+      <li>O método mais simples venceu nas duas réguas da competição: o erro e o tempo.</li>
+      <li>Num prédio de escritórios, a hora do dia e o dia da semana explicam quase tudo.</li>
+      <li>O método foi escolhido pela prova, antes de ver o gabarito, como numa competição de verdade.</li>
+      <li>Imprevistos, como um equipamento esquecido ligado, nenhum método baseado no histórico consegue prever.</li>
+    </ul>
   </section>
 </body>
 </html>

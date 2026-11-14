@@ -172,3 +172,26 @@ tr.melhor {
   font-size: 14px;
   color: var(--texto-suave);
 }
+
+/* ---------- Cartões dos métodos, lado a lado ---------- */
+.metodos {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);   /* 3 colunas de mesma largura */
+  gap: 12px;
+}
+
+.metodo {
+  background: var(--fundo);
+  border: 1px solid var(--borda);
+  border-radius: 8px;
+  padding: 14px 16px;
+}
+
+.metodo h4 {
+  margin: 0 0 6px;
+  color: var(--destaque);
+}
+
+.metodo p {
+  margin: 0;
+}
