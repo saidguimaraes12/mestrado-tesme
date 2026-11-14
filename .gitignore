@@ -1,0 +1,13 @@
+# Ambiente virtual do Python
+.venv/
+
+# Backups automáticos do Jupyter
+.ipynb_checkpoints/
+
+# Arquivos temporários do Office (aparecem enquanto um .pptx está aberto)
+~$*
+
+# Lixo do Windows e do Python
+desktop.ini
+Thumbs.db
+__pycache__/
